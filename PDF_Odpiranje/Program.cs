@@ -13,12 +13,17 @@ namespace PDF_Odpiranje
         static void Main(string[] args)
         {
             string filename = ConfigurationManager.AppSettings["filename"];
-            string[] fileGroup = Directory.GetFiles(filename, "*_R.pdf");
-            foreach (var x in fileGroup)
+            int interval = Convert.ToUInt16(ConfigurationManager.AppSettings["interval"]);
+            while (true)
             {
-                var newName = x.Substring(0, x.Length - 6) + ".pdf";
-                System.IO.File.Move(x, newName);
-                System.Diagnostics.Process.Start(newName);
+                string[] fileGroup = Directory.GetFiles(filename, "*_R.pdf");
+                foreach (var x in fileGroup)
+                {
+                    var newName = x.Substring(0, x.Length - 6) + ".pdf";
+                    System.IO.File.Move(x, newName);
+                    System.Diagnostics.Process.Start(newName);
+                }
+                System.Threading.Thread.Sleep(interval);
             }
         }
     }
